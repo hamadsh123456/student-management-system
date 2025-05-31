@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Results - Student Management</title>
+  <link rel="stylesheet" href="result.css">
+</head>
+<body>
+    <style>
+        body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f5f5;
+}
+
+header {
+  background: #2c3e50;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+nav {
+  background: #34495e;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+nav a {
+  color: white;
+  margin: 0 10px;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+nav a:hover,
+nav a.active {
+  background: #1abc9c;
+}
+
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input {
+  padding: 10px;
+  margin: 5px;
+  width: 28%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #219150;
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #2980b9;
+  color: white;
+}
+
+td, th {
+  padding: 10px;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background: #f2f2f2;
+}
+ 
+    </style>
+  <header>
+    <h1>Student Results</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="add.html">Add Student</a>
+    <a href="view.html">View Students</a>
+    <a href="result.html" class="active">Results</a>
+    <a href="attendance.html">Attendance</a>
+  </nav>
+
+  <main class="container">
+    <section class="form-section">
+      <h2>Add Student Result</h2>
+      <input type="text" id="studentName" placeholder="Student Name">
+      <input type="text" name="" id="total marks" placeholder="total marks">
+      <input type="number" id="studentMarks" placeholder="Marks (%)">
+      <input type="text" id="studentGrade" placeholder="Grade (A/B/C)">
+      <button onclick="saveResult()">Save Result</button>
+    </section>
+
+    <section class="table-section">
+      <h2>All Results</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Marks</th>
+            <th>total marks</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody id="resultTable"></tbody>
+      </table>
+           <button type="reset">reset</button>
+    </section>
+  </main>
+
+  <script>
+    function saveResult() {
+      const name = document.getElementById("studentName").value.trim();
+      const marks = document.getElementById("studentMarks").value.trim();
+       const total = document.getElementById("total marks").value.trim();
+      const grade = document.getElementById("studentGrade").value.trim();
+
+      if (!name || !marks || !grade || !totalmarks) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      const data = JSON.parse(localStorage.getItem("results")) || [];
+      data.push({ name, marks, grade });
+      localStorage.setItem("results", JSON.stringify(data));
+      loadResults();
+      document.getElementById("studentName").value = "";
+      document.getElementById("studentMarks").value = "";
+        document.getElementById("total marks").value = "";
+      document.getElementById("studentGrade").value = "";
+    }
+
+    function loadResults() {
+      const data = JSON.parse(localStorage.getItem("results")) || [];
+      const table = document.getElementById("resultTable");
+      table.innerHTML = "";
+      data.forEach((r, i) => {
+        const row = `<tr>
+                      <td>${i + 1}</td>
+                      <td>${r.name}</td>
+                      <td>${r.marks}</td>
+                       <td>${r.marks}</td>
+                      <td>${r.grade}</td>
+                    </tr>`;
+        table.innerHTML += row;
+      });
+    }
+
+    window.onload = loadResults;
+  </script>
+
+</body>
+</html>
+
