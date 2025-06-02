@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Results</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f7fa;
+      padding: 20px;
+    }
+
+    nav ul {
+      list-style: none;
+      background: #1f1f1f;
+      padding: 10px;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 15px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(161, 11, 11, 0.1);
+    }
+
+    form input, form button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+
+    form button {
+      background: royalblue;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    table {
+      width: 90%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+      font-size: 18px;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="add_student.html">Add Student</a></li>
+      <li><a href="view_students.html">View Students</a></li>
+      <li><a href="results.html">Results</a></li>
+      <li><a href="attendance.html">Attendance</a></li>
+    </ul>
+  </nav>
+
+  <h2>📘 Add Student Result</h2>
+  <form id="resultForm">
+    <input type="text" id="name" placeholder="Student Name" required>
+    <input type="text" id="subject" placeholder="Subject" required>
+    <input type="number" id="marks" placeholder="Marks" required>
+    <button type="submit">Add Result</button>
+  </form><div style="text-align: center; margin-top: 20px;">
+  <a href="show.html" style="font-weight: bold; color: green;">🔐 View Results (show only)</a>
+</div>
+
+
+ 
+
+  <script>
+    const resultForm = document.getElementById("resultForm");
+    const resultsTableBody = document.querySelector("#resultsTable tbody");
+
+    function loadResults() {
+      const results = JSON.parse(localStorage.getItem("studentResults")) || [];
+      resultsTableBody.innerHTML = "";
+      results.forEach((res) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${res.name}</td>
+          <td>${res.subject}</td>
+          <td>${res.marks}</td>
+        `;
+        resultsTableBody.appendChild(row);
+      });
+    }
+
+    resultForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const subject = document.getElementById("subject").value.trim();
+      const marks = document.getElementById("marks").value.trim();
+
+      if (!name || !subject || !marks) return;
+
+      const newResult = { name, subject, marks };
+      const results = JSON.parse(localStorage.getItem("studentResults")) || [];
+      results.push(newResult);
+      localStorage.setItem("studentResults", JSON.stringify(results));
+      resultForm.reset();
+      loadResults();
+    });
+
+    // Load table on page load
+    window.onload = loadResults;
+  </script>
+</body>
+</html>
